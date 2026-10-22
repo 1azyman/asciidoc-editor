@@ -1,0 +1,431 @@
+/*
+ * Editor stylesheet. Tailwind 4 utilities are applied inside semantic classes via @apply; no utility
+ * classes are emitted, nothing is layered, everything is scoped under .adoc-editor so the editor
+ * coexists with Bootstrap, a host Tailwind build, or no framework at all.
+ */
+@import "tailwindcss/theme.css" theme(reference);
+@import "tailwindcss/utilities.css" source(none);
+
+.adoc-editor {
+    /* Design tokens. Override on .adoc-editor or via the `theme` option. */
+    --adoc-font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --adoc-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --adoc-font-size: 15px;
+    --adoc-color-bg: #ffffff;
+    --adoc-color-fg: #1f2937;
+    --adoc-color-muted: #6b7280;
+    --adoc-color-border: #d1d5db;
+    --adoc-color-accent: #2563eb;
+    --adoc-color-toolbar-bg: #f9fafb;
+    --adoc-color-code-bg: #f3f4f6;
+    --adoc-color-raw-bg: #fffbeb;
+    --adoc-color-selection: rgba(37, 99, 235, 0.18);
+    --adoc-color-note: #2563eb;
+    --adoc-color-tip: #16a34a;
+    --adoc-color-important: #7c3aed;
+    --adoc-color-warning: #d97706;
+    --adoc-color-caution: #dc2626;
+    --adoc-radius: 6px;
+    --adoc-spacing: 1rem;
+
+    @apply flex flex-col min-h-0 w-full;
+    box-sizing: border-box;
+    font-family: var(--adoc-font-family);
+    font-size: var(--adoc-font-size);
+    line-height: 1.55;
+    color: var(--adoc-color-fg);
+    background: var(--adoc-color-bg);
+    border: 1px solid var(--adoc-color-border);
+    border-radius: var(--adoc-radius);
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+}
+
+.adoc-editor[data-theme="dark"] {
+    --adoc-color-bg: #111827;
+    --adoc-color-fg: #e5e7eb;
+    --adoc-color-muted: #9ca3af;
+    --adoc-color-border: #374151;
+    --adoc-color-accent: #60a5fa;
+    --adoc-color-toolbar-bg: #1f2937;
+    --adoc-color-code-bg: #1f2937;
+    --adoc-color-raw-bg: #292524;
+    --adoc-color-selection: rgba(96, 165, 250, 0.25);
+}
+
+/* Toolbar */
+.adoc-editor .adoc-toolbar {
+    @apply flex flex-wrap items-center gap-0.5 px-1.5 py-1;
+    background: var(--adoc-color-toolbar-bg);
+    border-bottom: 1px solid var(--adoc-color-border);
+    border-radius: var(--adoc-radius) var(--adoc-radius) 0 0;
+}
+
+.adoc-editor .adoc-toolbar-button {
+    @apply inline-flex items-center justify-center h-8 min-w-8 px-1.5 rounded border-0 bg-transparent cursor-pointer;
+    color: var(--adoc-color-fg);
+    font: inherit;
+    line-height: 1;
+
+    svg {
+        @apply w-4 h-4;
+        stroke: currentColor;
+    }
+
+    &:hover:not(:disabled) {
+        background: color-mix(in srgb, var(--adoc-color-fg) 8%, transparent);
+    }
+
+    &.adoc-active {
+        color: var(--adoc-color-accent);
+        background: color-mix(in srgb, var(--adoc-color-accent) 12%, transparent);
+    }
+
+    &:disabled {
+        @apply opacity-40 cursor-default;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--adoc-color-accent);
+        outline-offset: 1px;
+    }
+}
+
+.adoc-editor .adoc-toolbar-select {
+    @apply h-8 px-2 rounded text-sm;
+    color: var(--adoc-color-fg);
+    background: var(--adoc-color-bg);
+    border: 1px solid var(--adoc-color-border);
+    font-family: inherit;
+
+    &:disabled {
+        @apply opacity-40;
+    }
+}
+
+.adoc-editor .adoc-toolbar-separator {
+    @apply inline-block w-px h-5 mx-1;
+    background: var(--adoc-color-border);
+}
+
+/* Block properties panel */
+.adoc-editor .adoc-block-panel {
+    @apply flex flex-wrap items-end gap-x-3 gap-y-2 px-3 py-2 text-sm;
+    background: var(--adoc-color-toolbar-bg);
+    border-bottom: 1px solid var(--adoc-color-border);
+
+    .adoc-block-panel-title {
+        @apply basis-full text-xs font-bold uppercase tracking-wide;
+        color: var(--adoc-color-muted);
+    }
+
+    .adoc-block-panel-empty {
+        color: var(--adoc-color-muted);
+    }
+
+    .adoc-block-panel-field {
+        @apply flex flex-col gap-0.5 min-w-32 flex-1;
+    }
+
+    .adoc-block-panel-label {
+        @apply text-xs;
+        color: var(--adoc-color-muted);
+    }
+
+    .adoc-block-panel-input {
+        @apply h-7 px-2 rounded text-sm w-full;
+        font-family: var(--adoc-font-mono);
+        color: var(--adoc-color-fg);
+        background: var(--adoc-color-bg);
+        border: 1px solid var(--adoc-color-border);
+
+        &:focus-visible {
+            outline: 2px solid var(--adoc-color-accent);
+            outline-offset: -1px;
+        }
+
+        &:disabled {
+            @apply opacity-60;
+        }
+    }
+}
+
+/* Content area */
+.adoc-editor .adoc-content {
+    @apply flex-1 min-h-0 overflow-auto;
+    padding: var(--adoc-spacing) calc(var(--adoc-spacing) * 1.25);
+}
+
+.adoc-editor .adoc-source {
+    @apply flex-1 min-h-64 w-full resize-y border-0;
+    padding: var(--adoc-spacing);
+    font-family: var(--adoc-font-mono);
+    font-size: 0.9em;
+    line-height: 1.5;
+    color: var(--adoc-color-fg);
+    background: var(--adoc-color-bg);
+    outline: none;
+    tab-size: 4;
+}
+
+.adoc-editor .ProseMirror {
+    outline: none;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    min-height: 12rem;
+
+    ::selection {
+        background: var(--adoc-color-selection);
+    }
+}
+
+.adoc-editor .ProseMirror-selectednode,
+.adoc-editor .adoc-selected {
+    outline: 2px solid var(--adoc-color-accent);
+    outline-offset: 2px;
+}
+
+.adoc-editor .ProseMirror-gapcursor {
+    @apply block relative pointer-events-none;
+
+    &::after {
+        content: "";
+        @apply block absolute top-0 w-5;
+        border-top: 1px solid var(--adoc-color-fg);
+        animation: adoc-blink 1.1s steps(2, start) infinite;
+    }
+}
+
+@keyframes adoc-blink {
+    to {
+        visibility: hidden;
+    }
+}
+
+/* Blocks */
+.adoc-editor .ProseMirror > * + * {
+    margin-top: calc(var(--adoc-spacing) * 0.75);
+}
+
+.adoc-editor .adoc-doctitle {
+    @apply text-3xl font-semibold mt-0 mb-4;
+    line-height: 1.2;
+    border-bottom: 1px solid var(--adoc-color-border);
+    padding-bottom: 0.4em;
+}
+
+.adoc-editor .adoc-heading {
+    @apply font-semibold m-0;
+    line-height: 1.25;
+    margin-top: calc(var(--adoc-spacing) * 1.5);
+
+    &[data-adoc-level="0"] {
+        @apply text-3xl;
+    }
+
+    &[data-adoc-level="1"] {
+        @apply text-2xl;
+    }
+
+    &[data-adoc-level="2"] {
+        @apply text-xl;
+    }
+
+    &[data-adoc-level="3"] {
+        @apply text-lg;
+    }
+
+    &[data-adoc-level="4"],
+    &[data-adoc-level="5"] {
+        @apply text-base;
+    }
+}
+
+.adoc-editor .adoc-paragraph {
+    @apply m-0;
+}
+
+/* Block title, shown from the data attribute so it needs no extra DOM. */
+.adoc-editor [data-adoc-title]::before {
+    content: attr(data-adoc-title);
+    @apply block text-sm italic mb-1;
+    color: var(--adoc-color-muted);
+}
+
+.adoc-editor .adoc-ulist,
+.adoc-editor .adoc-olist {
+    @apply m-0 pl-6;
+}
+
+.adoc-editor .adoc-ulist {
+    list-style: disc;
+}
+
+.adoc-editor .adoc-olist {
+    list-style: decimal;
+}
+
+.adoc-editor .adoc-list-item {
+    @apply m-0;
+
+    > * + * {
+        margin-top: calc(var(--adoc-spacing) * 0.4);
+    }
+}
+
+.adoc-editor .adoc-checklist-item {
+    list-style: none;
+    margin-left: -1.25rem;
+
+    > .adoc-paragraph::before {
+        content: "\2610";
+        @apply inline-block w-5;
+    }
+
+    &[data-adoc-checked="true"] > .adoc-paragraph::before {
+        content: "\2611";
+    }
+}
+
+.adoc-editor .adoc-codeblock {
+    @apply m-0 px-3 py-2 overflow-x-auto rounded text-sm;
+    font-family: var(--adoc-font-mono);
+    background: var(--adoc-color-code-bg);
+    border: 1px solid var(--adoc-color-border);
+    white-space: pre;
+
+    code {
+        font: inherit;
+        background: none;
+        padding: 0;
+    }
+
+    &[data-adoc-language]::before {
+        content: attr(data-adoc-language);
+        @apply float-right text-xs uppercase;
+        color: var(--adoc-color-muted);
+    }
+}
+
+.adoc-editor .adoc-admonition {
+    @apply px-4 py-3 rounded;
+    border-left: 4px solid var(--adoc-color-accent);
+    background: color-mix(in srgb, var(--adoc-color-accent) 7%, transparent);
+
+    &::before {
+        content: attr(data-adoc-type);
+        @apply block text-xs font-bold tracking-wide mb-1;
+        color: var(--adoc-color-accent);
+    }
+
+    > * + * {
+        margin-top: calc(var(--adoc-spacing) * 0.5);
+    }
+
+    &.adoc-admonition-note {
+        --adoc-color-accent: var(--adoc-color-note);
+    }
+
+    &.adoc-admonition-tip {
+        --adoc-color-accent: var(--adoc-color-tip);
+    }
+
+    &.adoc-admonition-important {
+        --adoc-color-accent: var(--adoc-color-important);
+    }
+
+    &.adoc-admonition-warning {
+        --adoc-color-accent: var(--adoc-color-warning);
+    }
+
+    &.adoc-admonition-caution {
+        --adoc-color-accent: var(--adoc-color-caution);
+    }
+}
+
+.adoc-editor .adoc-image {
+    @apply m-0;
+
+    img {
+        @apply max-w-full h-auto block;
+    }
+}
+
+.adoc-editor .adoc-include {
+    @apply inline-flex items-center gap-2 px-3 py-1.5 rounded text-sm;
+    font-family: var(--adoc-font-mono);
+    border: 1px dashed var(--adoc-color-border);
+    background: var(--adoc-color-code-bg);
+    color: var(--adoc-color-muted);
+    cursor: default;
+
+    .adoc-include-label {
+        @apply text-xs uppercase font-bold tracking-wide;
+    }
+
+    .adoc-include-target {
+        color: var(--adoc-color-fg);
+    }
+}
+
+.adoc-editor .adoc-raw {
+    @apply rounded overflow-hidden;
+    border: 1px dashed var(--adoc-color-border);
+    background: var(--adoc-color-raw-bg);
+
+    .adoc-raw-label {
+        @apply px-3 py-1 text-xs uppercase font-bold tracking-wide;
+        color: var(--adoc-color-muted);
+    }
+
+    .adoc-raw-source {
+        @apply block w-full m-0 px-3 py-2 border-0 resize-none text-sm;
+        font-family: var(--adoc-font-mono);
+        line-height: 1.5;
+        color: var(--adoc-color-fg);
+        background: transparent;
+        outline: none;
+        white-space: pre;
+        overflow-x: auto;
+    }
+}
+
+/* Inline */
+.adoc-editor .ProseMirror {
+    code {
+        @apply px-1 rounded text-[0.9em];
+        font-family: var(--adoc-font-mono);
+        background: var(--adoc-color-code-bg);
+    }
+
+    mark {
+        background: color-mix(in srgb, #facc15 45%, transparent);
+        color: inherit;
+    }
+
+    a,
+    .adoc-link {
+        color: var(--adoc-color-accent);
+        text-decoration: underline;
+    }
+
+    .adoc-attribute-ref,
+    .adoc-xref {
+        @apply inline-block px-1 rounded text-[0.85em];
+        font-family: var(--adoc-font-mono);
+        background: color-mix(in srgb, var(--adoc-color-accent) 12%, transparent);
+        color: var(--adoc-color-accent);
+    }
+
+    .adoc-xref::before {
+        content: "\2192\00a0";
+    }
+}
+
+.adoc-editor[data-adoc-readonly] .ProseMirror {
+    color: var(--adoc-color-muted);
+}

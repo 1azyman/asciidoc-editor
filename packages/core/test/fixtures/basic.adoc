@@ -1,0 +1,130 @@
+// leading comment
+= Document Title
+Jane Doe <jane@example.com>
+:toc:
+:icons: font
+:product: midPoint
+
+This is a paragraph with *bold*, _italic_, `mono`, #highlight#, ^sup^ and ~sub~ text.
+It continues on a second line and links to https://example.com and https://example.com[Example].
+Also link:relative/page.html[a relative link], mailto:someone@example.com[mail] and an attribute reference to {product}.
+Escaped \*not bold\* and a**b**c unconstrained.
+
+[[first-section]]
+== First Section
+
+A line with a hard break +
+and the next line.
+
+.Paragraph title
+[.lead]
+Paragraph with role and title.
+
+NOTE: This is a note with *bold* text.
+
+[TIP]
+====
+A tip with two paragraphs.
+
+Second paragraph of the tip.
+====
+
+.List title
+* one
+* two *bold*
+** nested one
+** nested two
+*** deep
+* three
++
+Continuation paragraph attached to three.
++
+----
+code in list
+----
+
+. first
+. second
+.. nested ordered
+. third
+
+* [ ] open task
+* [x] done task
+
+- dash one
+- dash two
+
+[source,java]
+----
+public class Foo {
+    int x = 1;
+}
+----
+
+.Listing title
+[source,bash,linenums]
+----
+echo "hi"
+----
+
+```python
+print("fenced")
+```
+
+----
+plain listing
+----
+
+....
+literal block
+....
+
+ indented literal paragraph
+ second line
+
+image::images/logo.png[Logo,300]
+
+.Figure title
+[#fig-id]
+image::images/other.png[Other]
+
+include::partial.adoc[leveloffset=+1]
+
+=== Sub Section
+
+See <<first-section>> and <<first-section,the first section>> and xref:other.adoc[Other doc].
+
+////
+block comment
+////
+
+// line comment
+// another line
+
+:body-attr: value
+
+[cols="1,2"]
+|===
+| a | b
+| c | d
+|===
+
+term:: definition
+another:: definition two
+
+<1> callout one
+
+[quote,Someone]
+A quoted paragraph is kept raw.
+
+[%hardbreaks]
+hard
+breaks
+
+****
+sidebar block kept raw
+****
+
+==== Level three
+
+Last paragraph.

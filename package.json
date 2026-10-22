@@ -1,0 +1,25 @@
+{
+  "name": "asciidoc-editor",
+  "private": true,
+  "version": "0.1.0",
+  "description": "AsciiDoc WYSIWYG editor: core parser/serializer, framework-free editor, React wrapper",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=24",
+    "pnpm": ">=10"
+  },
+  "packageManager": "pnpm@10.31.0",
+  "scripts": {
+    "build": "pnpm -r --filter \"./packages/**\" build",
+    "test": "pnpm -r --filter \"./packages/**\" test",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "dev": "pnpm --filter demo dev",
+    "dev:react": "pnpm --filter demo-react dev"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.12",
+    "typescript": "^5.9.0"
+  }
+}

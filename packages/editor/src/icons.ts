@@ -1,0 +1,38 @@
+import {
+    Bold,
+    Code,
+    FileCode,
+    Highlighter,
+    Image,
+    Italic,
+    Link,
+    List,
+    ListOrdered,
+    MessageSquareWarning,
+    Redo2,
+    SlidersHorizontal,
+    SquareCode,
+    Subscript,
+    Superscript,
+    Undo2,
+} from 'lucide-static';
+
+/** Inline SVG strings from Lucide. No icon font, no external assets. */
+export const icons: Record<string, string> = {
+    undo: Undo2,
+    redo: Redo2,
+    bold: Bold,
+    italic: Italic,
+    code: Code,
+    highlight: Highlighter,
+    superscript: Superscript,
+    subscript: Subscript,
+    link: Link,
+    bulletList: List,
+    orderedList: ListOrdered,
+    codeBlock: SquareCode,
+    admonition: MessageSquareWarning,
+    image: Image,
+    source: FileCode,
+    attributes: SlidersHorizontal,
+};
