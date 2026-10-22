@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>AsciiDoc editor standalone demo</title>
+    <!--
+      Standalone page: no dev server, no bundler. Loads the prebuilt bundle and stylesheet from
+      packages/editor/dist, so run `pnpm build` once, then open this file directly in a browser.
+      The same two files plus the asciidoc-editor global are what a host page such as Wicket gets.
+    -->
+    <link rel="stylesheet" href="../../packages/editor/dist/asciidoc-editor.css"/>
+    <script src="../../packages/editor/dist/asciidoc-editor.iife.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, sans-serif;
+            background: #eef0f3;
+        }
+
+        .page {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        #editor .adoc-editor {
+            min-height: 70vh;
+            max-height: 85vh;
+        }
+
+        #output {
+            margin: 0;
+            padding: 1rem;
+            min-height: 70vh;
+            max-height: 85vh;
+            overflow: auto;
+            background: #fff;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 13px;
+            white-space: pre-wrap;
+        }
+
+        .missing {
+            padding: 1rem;
+            background: #fef2f2;
+            border: 1px solid #fca5a5;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="controls">
+        <strong>AsciiDoc editor standalone demo</strong>
+        <label><input type="checkbox" id="dark"/> dark</label>
+        <label><input type="checkbox" id="readonly"/> read only</label>
+        <button id="reset" type="button">Reset sample</button>
+    </div>
+    <div class="split">
+        <div id="editor"></div>
+        <pre id="output"></pre>
+    </div>
+</div>
+
+<script type="text/asciidoc" id="sample">= Sample Document
+Author Name
+:toc:
+:product: midPoint
+
+This is a paragraph with *bold*, _italic_, `mono`, #highlight#, ^sup^ and ~sub~ text.
+It links to https://example.com[Example] and refers to {product}.
+
+[[intro]]
+== Introduction
+
+A line with a hard break +
+and the next line.
+
+NOTE: Admonition paragraph with *bold* text.
+
+[WARNING]
+====
+A warning with two paragraphs.
+
+Second paragraph of the warning.
+====
+
+.Things to do
+* [ ] open task
+* [x] done task
+* plain item
+** nested item
++
+Continuation paragraph attached to the item.
+
+. first
+. second
+
+[source,java]
+----
+public class Foo {
+    int x = 1;
+}
+----
+
+image::images/logo.png[Logo,300]
+
+include::partial.adoc[leveloffset=+1]
+
+See <<intro>> for details.
+
+[cols="1,2"]
+|===
+| a | b
+| c | d
+|===
+
+term:: definition
+another:: another definition
+
+// A comment that is preserved.
+
+=== Sub Section
+
+Last paragraph.
+</script>
+
+<script>
+    (function () {
+        var container = document.getElementById('editor');
+        if (typeof AsciiDocEditor === 'undefined') {
+            container.innerHTML = '<div class="missing">Bundle not found. Run <code>pnpm build</code> in the asciidoc-editor directory, then reload this page.</div>';
+            return;
+        }
+        var sample = document.getElementById('sample').textContent.replace(/^\n/, '');
+        var output = document.getElementById('output');
+        var editor = AsciiDocEditor.createAsciiDocEditor(container, {
+            value: sample,
+            onChange: function (value) {
+                output.textContent = value;
+            }
+        });
+        output.textContent = editor.getValue();
+
+        document.getElementById('dark').addEventListener('change', function (e) {
+            if (e.target.checked) editor.element.setAttribute('data-theme', 'dark');
+            else editor.element.removeAttribute('data-theme');
+        });
+        document.getElementById('readonly').addEventListener('change', function (e) {
+            editor.setReadOnly(e.target.checked);
+        });
+        document.getElementById('reset').addEventListener('click', function () {
+            editor.setValue(sample);
+            output.textContent = editor.getValue();
+        });
+        window.editor = editor;
+    })();
+</script>
+</body>
+</html>

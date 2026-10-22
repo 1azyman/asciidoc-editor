@@ -1,0 +1,61 @@
+= Sample Document
+Author Name
+:toc:
+:product: midPoint
+
+This is a paragraph with *bold*, _italic_, `mono`, #highlight#, ^sup^ and ~sub~ text.
+It links to https://example.com[Example] and refers to {product}.
+
+[[intro]]
+== Introduction
+
+A line with a hard break +
+and the next line.
+
+NOTE: Admonition paragraph with *bold* text.
+
+[WARNING]
+====
+A warning with two paragraphs.
+
+Second paragraph of the warning.
+====
+
+.Things to do
+* [ ] open task
+* [x] done task
+* plain item
+** nested item
++
+Continuation paragraph attached to the item.
+
+. first
+. second
+
+[source,java]
+----
+public class Foo {
+    int x = 1;
+}
+----
+
+image::images/logo.png[Logo,300]
+
+include::partial.adoc[leveloffset=+1]
+
+See <<intro>> for details.
+
+[cols="1,2"]
+|===
+| a | b
+| c | d
+|===
+
+term:: definition
+another:: another definition
+
+// A comment that is preserved.
+
+=== Sub Section
+
+Last paragraph.

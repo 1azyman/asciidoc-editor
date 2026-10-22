@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": [
+      "vite/client"
+    ],
+    "paths": {
+      "@monoted/asciidoc-editor-core": [
+        "../../packages/core/src/index.ts"
+      ],
+      "@monoted/asciidoc-editor": [
+        "../../packages/editor/src/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "vite.config.ts"
+  ]
+}

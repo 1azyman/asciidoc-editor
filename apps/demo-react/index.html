@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>AsciiDoc editor React demo</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, sans-serif;
+            background: #eef0f3;
+        }
+
+        .page {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .adoc-editor {
+            min-height: 70vh;
+            max-height: 85vh;
+        }
+
+        textarea.raw {
+            width: 100%;
+            min-height: 70vh;
+            font-size: 13px;
+            font-family: monospace;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
