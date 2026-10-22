@@ -39,7 +39,7 @@ public class Foo {
 }
 ----
 
-image::images/logo.png[Logo,300]
+image::images/logo.png[Logo,50]
 
 include::partial.adoc[leveloffset=+1]
 
