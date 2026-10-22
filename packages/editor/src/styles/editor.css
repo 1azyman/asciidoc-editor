@@ -211,7 +211,12 @@
     }
 }
 
-/* Blocks */
+/* Blocks. Browser margins are reset once here (zero specificity via :where). Element rules
+   below must not set vertical margins, or they would override the sibling spacing. */
+.adoc-editor .ProseMirror :where(p, pre, ul, ol, figure, h1, h2, h3, h4, h5, h6) {
+    margin: 0;
+}
+
 .adoc-editor .ProseMirror > * + * {
     margin-top: calc(var(--adoc-spacing) * 0.75);
 }
@@ -224,7 +229,7 @@
 }
 
 .adoc-editor .adoc-heading {
-    @apply font-semibold m-0;
+    @apply font-semibold;
     line-height: 1.25;
     margin-top: calc(var(--adoc-spacing) * 1.5);
 
@@ -250,20 +255,19 @@
     }
 }
 
-.adoc-editor .adoc-paragraph {
-    @apply m-0;
-}
-
-/* Block title, shown from the data attribute so it needs no extra DOM. */
-.adoc-editor [data-adoc-title]::before {
+/* Block title, shown from the data attribute so it needs no extra DOM. Admonitions use ::before
+   for their type label and draw the title in ::after instead, see .adoc-admonition. */
+.adoc-editor [data-adoc-title]:not(.adoc-admonition)::before {
     content: attr(data-adoc-title);
     @apply block text-sm italic mb-1;
+    font-family: var(--adoc-font-family);
+    white-space: normal;
     color: var(--adoc-color-muted);
 }
 
 .adoc-editor .adoc-ulist,
 .adoc-editor .adoc-olist {
-    @apply m-0 pl-6;
+    @apply pl-6;
 }
 
 .adoc-editor .adoc-ulist {
@@ -297,7 +301,7 @@
 }
 
 .adoc-editor .adoc-codeblock {
-    @apply m-0 px-3 py-2 overflow-x-auto rounded text-sm;
+    @apply relative px-3 py-2 overflow-x-auto rounded text-sm;
     font-family: var(--adoc-font-mono);
     background: var(--adoc-color-code-bg);
     border: 1px solid var(--adoc-color-border);
@@ -309,15 +313,17 @@
         padding: 0;
     }
 
-    &[data-adoc-language]::before {
+    /* Language label in ::after so the block title keeps ::before. */
+    &[data-adoc-language]::after {
         content: attr(data-adoc-language);
-        @apply float-right text-xs uppercase;
+        @apply absolute top-1 right-2 text-xs uppercase;
         color: var(--adoc-color-muted);
     }
 }
 
 .adoc-editor .adoc-admonition {
-    @apply px-4 py-3 rounded;
+    /* Flex column so the pseudo-elements can be ordered: type label, title, content. */
+    @apply flex flex-col px-4 py-3 rounded;
     border-left: 4px solid var(--adoc-color-accent);
     background: color-mix(in srgb, var(--adoc-color-accent) 7%, transparent);
 
@@ -325,6 +331,14 @@
         content: attr(data-adoc-type);
         @apply block text-xs font-bold tracking-wide mb-1;
         color: var(--adoc-color-accent);
+        order: -2;
+    }
+
+    &[data-adoc-title]::after {
+        content: attr(data-adoc-title);
+        @apply block text-sm italic mb-1;
+        color: var(--adoc-color-muted);
+        order: -1;
     }
 
     > * + * {
@@ -353,8 +367,6 @@
 }
 
 .adoc-editor .adoc-image {
-    @apply m-0;
-
     img {
         @apply max-w-full h-auto block;
     }
