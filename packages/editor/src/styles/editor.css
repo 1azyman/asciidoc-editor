@@ -118,6 +118,11 @@
     background: var(--adoc-color-toolbar-bg);
     border-bottom: 1px solid var(--adoc-color-border);
 
+    /* display: flex above would otherwise override the hidden attribute. */
+    &[hidden] {
+        display: none;
+    }
+
     .adoc-block-panel-title {
         @apply basis-full text-xs font-bold uppercase tracking-wide;
         color: var(--adoc-color-muted);

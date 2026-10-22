@@ -12,7 +12,7 @@
         }
 
         .page {
-            max-width: 1400px;
+            max-width: 1800px;
             margin: 0 auto;
             padding: 1.5rem;
         }
@@ -29,19 +29,19 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
-            align-items: start;
+            align-items: stretch;
         }
 
-        #editor .adoc-editor {
-            min-height: 70vh;
-            max-height: 85vh;
+        /* Same fixed, border-box height on both panes so they line up. */
+        #editor .adoc-editor,
+        #output {
+            box-sizing: border-box;
+            height: 80vh;
         }
 
         #output {
             margin: 0;
             padding: 1rem;
-            min-height: 70vh;
-            max-height: 85vh;
             overflow: auto;
             background: #fff;
             border: 1px solid #d1d5db;
